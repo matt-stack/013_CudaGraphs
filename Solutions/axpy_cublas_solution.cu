@@ -135,7 +135,7 @@ cudaGraphAddKernelNode(&kernelNode2, graph, nodeDependencies.data(),
 cudaCheckErrors("Adding kernelNode2 failed");
 
 nodeDependencies.clear();
-nodeDependencies.push_back(kernelNode2); // manage dependecy vector
+nodeDependencies.push_back(kernelNode2); // manage dependency vector
 
 cudaGraphNode_t *nodes = NULL;
 size_t numNodes = 0;
