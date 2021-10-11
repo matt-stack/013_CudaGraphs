@@ -96,6 +96,9 @@ cudaGraphExec_t instance;
 
 cudaGraphCreate(&graph, 0);
 
+int threads = 512;
+int blocks = (N + (threads - 1) / threads);
+
 // Launching work
 for (int i = 0; i < 100; ++i){
     if (graphCreated == false){
@@ -103,19 +106,19 @@ for (int i = 0; i < 100; ++i){
         cudaStreamBeginCapture(streams[0], cudaStreamCaptureModeGlobal);
         cudaCheckErrors("Stream begin capture failed");
 
-        kernel_a<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+        kernel_a<<<blocks, threads, 0, streams[0]>>>(d_x, d_y);
         cudaCheckErrors("Kernel a failed");
 
         cudaEventRecord(event1, streams[0]);
         cudaCheckErrors("Event record failed");
 
-        kernel_b<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+        kernel_b<<<blocks, threads, 0, streams[0]>>>(d_x, d_y);
         cudaCheckErrors("Kernel b failed");
 
         cudaStreamWaitEvent(streams[1], event1);
         cudaCheckErrors("Event wait failed");
 
-        kernel_c<<<1024, 512, 0, streams[1]>>>(d_x, d_y);
+        kernel_c<<<blocks, threads, 0, streams[1]>>>(d_x, d_y);
         cudaCheckErrors("Kernel c failed");
 
         cudaEventRecord(event2, streams[1]);
@@ -124,7 +127,7 @@ for (int i = 0; i < 100; ++i){
         cudaStreamWaitEvent(streams[0], event2);
         cudaCheckErrors("Event wait failed");
 
-        kernel_d<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+        kernel_d<<<blocks, threads, 0, streams[0]>>>(d_x, d_y);
         cudaCheckErrors("Kernel d failed");
 
         cudaStreamEndCapture(streams[0], &graph);
