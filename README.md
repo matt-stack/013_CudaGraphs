@@ -6,6 +6,7 @@ In this homework we will look at two different codes, both using Cuda Graphs. Th
 This task will be an example of how to use stream capture with Cuda Graphs. We will be creating a graph from a sequence of kernel launchs across two streams.
 
 We will be looking to implement the following graph, which can be helpful to see visually
+
 ![](graph_stream_capture.png)
 
 This is the same example from the slides, feel free to refer to them for help and hints.
