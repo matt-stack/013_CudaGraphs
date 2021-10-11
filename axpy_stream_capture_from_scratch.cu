@@ -89,65 +89,34 @@ cudaMemcpy(d_x, h_x, N, cudaMemcpyHostToDevice);
 cudaMemcpy(d_y, h_y, N, cudaMemcpyHostToDevice);
 cudaCheckErrors("cudaMalloc failed");
 
-// Set up graph
-bool graphCreated=false;
-cudaGraph_t graph;
-cudaGraphExec_t instance;
-
-cudaGraphCreate(&graph, 0);
-
 // Launching work
 for (int i = 0; i < 100; ++i){
-    if (graphCreated == false){
-    // If first pass, starting stream capture
-        cudaStreamBeginCapture(streams[0], cudaStreamCaptureModeGlobal);
-        cudaCheckErrors("Stream begin capture failed");
+    kernel_a<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+    cudaCheckErrors("Kernel a failed");
 
-        kernel_a<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
-        cudaCheckErrors("Kernel a failed");
+    cudaEventRecord(event1, streams[0]);
+    cudaCheckErrors("Event record failed");
 
-        cudaEventRecord(event1, streams[0]);
-        cudaCheckErrors("Event record failed");
+    kernel_b<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+    cudaCheckErrors("Kernel b failed");
 
-        kernel_b<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
-        cudaCheckErrors("Kernel b failed");
+    cudaStreamWaitEvent(streams[1], event1);
+    cudaCheckErrors("Event wait failed");
 
-        cudaStreamWaitEvent(streams[1], event1);
-        cudaCheckErrors("Event wait failed");
+    kernel_c<<<1024, 512, 0, streams[1]>>>(d_x, d_y);
+    cudaCheckErrors("Kernel c failed");
 
-        kernel_c<<<1024, 512, 0, streams[1]>>>(d_x, d_y);
-        cudaCheckErrors("Kernel c failed");
+    cudaEventRecord(event2, streams[1]);
+    cudaCheckErrors("Event record failed");
 
-        cudaEventRecord(event2, streams[1]);
-        cudaCheckErrors("Event record failed");
+    cudaStreamWaitEvent(streams[0], event2);
+    cudaCheckErrors("Event wait failed");
 
-        cudaStreamWaitEvent(streams[0], event2);
-        cudaCheckErrors("Event wait failed");
+    kernel_d<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
+    cudaCheckErrors("Kernel d failed");
 
-        kernel_d<<<1024, 512, 0, streams[0]>>>(d_x, d_y);
-        cudaCheckErrors("Kernel d failed");
-
-        cudaStreamEndCapture(streams[0], &graph);
-        cudaCheckErrors("Stream end capture failed");
-
-        // Creating the graph instance
-        cudaGraphInstantiate(&instance, graph, NULL, NULL, 0);
-        cudaCheckErrors("instantiating graph failed");
-
-        graphCreated = true;
-    }
-// Launch the graph instance
-cudaGraphLaunch(instance, streams[0]);
-cudaCheckErrors("Launching graph failed");
-cudaStreamSynchronize(streams[0]);
+    cudaStreamSynchronize(streams[0]);
 }
-
-// Count how many nodes we had
-cudaGraphNode_t *nodes = NULL;
-size_t numNodes = 0;
-cudaGraphGetNodes(graph, nodes, &numNodes);
-cudaCheckErrors("Graph get nodes failed");
-printf("Number of the nodes in the graph = %zu\n", numNodes);
 
 // Copy data back to host
 cudaMemcpy(h_y, d_y, N, cudaMemcpyDeviceToHost);
