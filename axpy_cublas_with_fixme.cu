@@ -81,7 +81,8 @@ cudaGraphNode_t kernelNode1, kernelNode2, libraryNode;
 cudaKernelNodeParams kernelNode1Params {0};
 cudaKernelNodeParams kernelNode2Params {0};
 
-cudaGraphCreate(&graph, 0); // create the graph
+// FIXME need to create the graph
+cudaGraphCreate(FIXME, 0); // create the graph
 cudaCheckErrors("cudaGraphCreate failure");
 
 // kernel_a and kernel_c use same args
@@ -115,7 +116,8 @@ cudaCheckErrors("cublasSaxpy failure");
 cudaStreamEndCapture(stream1, &libraryGraph);
 cudaCheckErrors("Stream capture end failure");
 
-cudaGraphAddChildGraphNode(&libraryNode, graph, nodeDependencies.data(),
+// FIXME need to fix the cudaGraphAddChildNode call
+cudaGraphAddChildGraphNode(FIXME, graph, FIXME,
                              nodeDependencies.size(), libraryGraph);
 cudaCheckErrors("Adding libraryNode failed");
 
@@ -149,7 +151,8 @@ cudaCheckErrors("Graph instantiation failed");
 
 // Launch the graph instance 100 times
 for (int i = 0; i < 100; ++i){
-    cudaGraphLaunch(instance, stream1);
+    // FIXME need to launch the graph
+    cudaGraphLaunch(FIXME, stream1);
     cudaStreamSynchronize(stream1);
 }
 cudaCheckErrors("Graph launch failed");

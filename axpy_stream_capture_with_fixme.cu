@@ -94,7 +94,8 @@ bool graphCreated=false;
 cudaGraph_t graph;
 cudaGraphExec_t instance;
 
-cudaGraphCreate(&graph, 0);
+// FIXME
+cudaGraphCreate(FIXME, 0);
 
 // Launching work
 for (int i = 0; i < 100; ++i){
@@ -131,13 +132,16 @@ for (int i = 0; i < 100; ++i){
         cudaCheckErrors("Stream end capture failed");
 
         // Creating the graph instance
-        cudaGraphInstantiate(&instance, graph, NULL, NULL, 0);
+        // FIXME
+        cudaGraphInstantiate(FIXME, graph, NULL, NULL, 0);
         cudaCheckErrors("instantiating graph failed");
 
-        graphCreated = true;
+        // FIXME
+        graphCreated = FIXME;
     }
 // Launch the graph instance
-cudaGraphLaunch(instance, streams[0]);
+// FIXME
+cudaGraphLaunch(FIXME, streams[0]);
 cudaCheckErrors("Launching graph failed");
 cudaStreamSynchronize(streams[0]);
 }
