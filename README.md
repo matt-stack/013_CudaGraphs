@@ -16,7 +16,7 @@ This is the same example from the slides, feel free to refer to them for help an
 
 Go ahead and take a look at the code now to get a sense of the new Graph API calls. On first pass, ignore the Graph APIs and try get a sense of the underlying code and what it is doing. The kernels themselves are not doing any specific math, but simply represent a random small kernel. Remember to think about the function of the two streams and refer back to the picture here to make sure you see the inherient dependencies created by the Cuda EventWait and Signal. 
 
-`bool graphCreated=false;` will be our method doing the set up for the graph only on the first pass (for loop iteration 0), then go straight to launching the graph in each subsequent iteration (1 - (N-1). 
+`bool graphCreated=false;` will be our method doing the set up for the graph only on the first pass (for loop iteration 0), then go straight to launching the graph in each subsequent iteration (1 - (N-1)). 
 
 An important distinction is the difference between the type `cudaGraph_t` and `cudaGraphExec_t`. `cudaGraph_t` is used to define the shape and the arguments of the overall graph and `cudaGraphExec_t` is a callable instance of the graph, which has gone through the instantiate step. 
 
