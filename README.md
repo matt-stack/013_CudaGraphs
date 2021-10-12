@@ -32,11 +32,17 @@ FIXMEs
 #### Explicit Graph Creation w/ Library Call
 In this task, we will look at a few of the explicit graph creation API and how to capture a library call with stream capture. A key to this example is remembering while we are using both explicit graph creation and stream capture, both are just ways of defining to a `cudaGraph_t` which we then instantiate into a `cudaGraphExec_t`. 
 
+We are creating 2 kernel nodes and a child graph derived from a cuBLAS axpy function call. See the diagram below for a visual.  
+
 https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__GRAPH.html
 
 This is the documentaion of the current Cuda toolkit graph management API. You can complete this example without consulting the docs by using the slides and context clues in the code, or but taking a look at the definition of `cudaGraphAddChildGraphNode` may help you if you are stuck with the FIXME.
 
-Unlike the first example, 
+Unlike the first example, this code is harder to "get the picture" by ignoring the graph API. Infact, without the graph API calls, there is no runnable program! This level of code change adds a lot of control at the price of code change and loss of readability for users unfamilar with Cuda Graphs. 
+
+The API is a bit tricky because it is quite different from anything else in Cuda at first, but the patterns are actually quite familar. It is just a different way to define Cuda work. 
+
+Take a look at the axpy_cublas_with_fixme.cu and try to get the FIXME to compile and run. And please consult the diagram for the flow of the program.
 
 ![](graph_with_library_call.png)
 
