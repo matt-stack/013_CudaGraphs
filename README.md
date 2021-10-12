@@ -80,6 +80,8 @@ In this task, we will look at a few of the explicit graph creation API and how t
 
 We are creating 2 kernel nodes and a child graph derived from a cuBLAS axpy function call. See the diagram below for a visual.  
 
+![](graph_with_library_call.png)
+
 https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__GRAPH.html
 
 This is the documentaion of the current Cuda toolkit graph management API. You can complete this example without consulting the docs by using the slides and context clues in the code, or but taking a look at the definition of `cudaGraphAddChildGraphNode` may help you if you are stuck with the FIXME.
@@ -108,7 +110,6 @@ srun -n 1 ./axpy_stream_capture_with_fixme
 
 Take a look at the axpy_cublas_with_fixme.cu and try to get the FIXME to compile and run. And please consult the diagram for the flow of the program.
 
-![](graph_with_library_call.png)
 
 FIXME
 1. cudaGraphCreate(FIXME, 0);
