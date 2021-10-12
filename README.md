@@ -27,6 +27,8 @@ FIXMEs
 3. graphCreated = FIXME;
 4. cudaGraphLaunch(FIXME, streams[0]);
 
+After you have complete the FIXME, you can see a time printed out after you run. This is the total time from running the graph 1000 times. You can compare that to the time from file axpy_stream_capture_timer.cu, which is the same code running the Cuda work in streams instead of the graph. These examples are primarily to introduce the topic and API, so they are not particularly performant. Given this, you should still be able to see a small preformance increase using the graph from the launch overhead savings. The instantiation phase is not included in the timing however, so it is not exactly a apple-to-apples comparison. It merely highlights the ideas we saw in the slides. 
+
 
 ### Task 2
 #### Explicit Graph Creation w/ Library Call
