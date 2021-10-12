@@ -23,7 +23,7 @@ An important distinction is the difference between the type `cudaGraph_t` and `c
 First, to compile the code on Summit:
 
 ```
-module load cuda
+module load cuda/11.4.0
 nvcc -arch=sm_70 axpy_stream_capture_with_fixme.cu -o axpy_stream_capture_with_fixme
 ```
 
